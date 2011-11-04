@@ -2,6 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     liquid (2.3.0)
+    mustache (0.99.4)
     oa-core (0.2.5)
     oa-openid (0.2.5)
       oa-core (= 0.2.5)
@@ -27,6 +28,7 @@ PLATFORMS
 
 DEPENDENCIES
   liquid
+  mustache
   oa-core
   oa-openid
   rack-contrib (~> 1.0.1)
