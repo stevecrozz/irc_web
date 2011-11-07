@@ -1,15 +1,55 @@
+require 'singleton'
+
 module IrcWeb
 
-  module Config
+  class Config
+    include Singleton
 
-    @@google_auth_domain = nil
+    class Storage
 
-    def self.google_auth_domain=(domain)
-      @@google_auth_domain = domain
+      def initialize(data={})
+        @data = {}
+        update!(data)
+      end
+
+      def update!(data)
+        data.each do |key, value|
+          self[key] = value
+        end
+      end
+
+      def [](key)
+        @data[key.to_sym]
+      end
+
+      def []=(key, value)
+        if value.class == Hash
+          @data[key.to_sym] = Storage.new(value)
+        else
+          @data[key.to_sym] = value
+        end
+      end
+
+      def method_missing(sym, *args)
+        if sym.to_s =~ /(.+)=$/
+          self[$1] = args.first
+        else
+          self[sym]
+        end
+      end
+
+      def raw
+        @data
+      end
+
     end
 
-    def self.google_auth_domain()
-      @@google_auth_domain
+    def load_data(data={})
+      @storage = Storage.new(data)
+    end
+
+    def method_missing(sym, *args)
+      @storage[sym]
     end
 
   end

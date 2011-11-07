@@ -1,0 +1,19 @@
+nav ul {
+  background-color: #333;
+  padding: 10px;
+}
+nav ul > li {
+  display: inline;
+  font-size: 1.6em;
+  margin: 0 10px;
+}
+nav a, nav a:visited {
+  color: #999;
+  text-decoration: none;
+}
+nav a.selected {
+  color: #fff;
+}
+.main {
+  padding: 0 20px;
+}

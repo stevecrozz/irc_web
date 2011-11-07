@@ -13,23 +13,21 @@ require 'lib/force_omni_auth_login'
 require 'yaml'
 require 'irc_web/app'
 
-config_path = File.join(app_path, 'config.yml')
-yml = YAML::load(
-  File.read(config_path)
-)
-
-IrcWeb::Config.google_auth_domain = yml["google_auth_domain"]
-
-#disable :run
+# Load our configuration file
+config = IrcWeb::Config.instance
+config.load_data(
+  YAML.load(
+    File.read(
+      File.join(app_path, 'config.yml'))))
 
 use Rack::CommonLogger
 use Rack::Reloader
 use Rack::ShowExceptions
 use Rack::Session::Cookie
 use Rack::Static, :urls => ["/media"]
-if IrcWeb::Config.google_auth_domain
+if config.google_auth_domain
   use OmniAuth::Builder do
-    provider :google_apps, nil, :name => 'login', :domain => IrcWeb::Config.google_auth_domain
+    provider :google_apps, nil, :name => 'login', :domain => config.google_auth_domain
   end
   use ForceOmniAuthLogin
 end

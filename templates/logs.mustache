@@ -1,0 +1,15 @@
+<h1>Logs</h1>
+<h2>Search Logs</h2>
+<form method="post" action="/logs/search">
+  <label for="q">Regex</label>
+  <input type="text" name="q"></input>
+  <input type="submit" value="grep"></input>
+</form>
+<p>
+  Use the search tool above to find information from the chat logs or download
+  entire channel logs from the list below.
+</p>
+{{#logs}}
+  <li><a href="/logs/{{to_s}}/download">#{{to_s}}</a></li>
+{{/logs}}
+
