@@ -1,0 +1,29 @@
+<h1>Logs</h1>
+<h2>Search Results</h2>
+<form method="post" action="/logs/search">
+  <label for="q">Regex</label>
+  <input type="text" name="q"></input>
+  <input type="submit" value="grep"></input>
+</form>
+{% if results.size > 0 %}
+  <dl class="grep-results">
+    {% for result in results %}
+      <dt>{{result.name}}</dt>
+      {% for match in result.matches %}
+        <dd>
+          <ol>
+          {% for line in match %}
+            <li class="{% if line.context %}context{% else %}match{% endif %}">
+              <span class="time">{{line.time}}</span>
+              {% if line.nick %}<span class="nick">{{line.nick}}</span>{% endif %}
+              <span class="text">{{line.text | escape}}</span>
+            </li>
+          {% endfor %}
+          </ol>
+        </dd>
+      {% endfor %}
+    {% endfor %}
+  </dl>
+{% else %}
+  <p>- no results -</p>
+{% endif %}

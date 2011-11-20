@@ -1,47 +1,58 @@
-require 'irc_web/config'
-require 'irc_web/views'
 require 'sinatra/base'
-require 'mustache/sinatra'
+require 'liquid'
+require 'irc_web/helper'
+require 'grep'
 
 module IrcWeb
 
   class App < Sinatra::Base
-    register Mustache::Sinatra
-
-    set :mustache, {
-      :templates => 'templates',
-      :namespace => IrcWeb,
-    }
-    config = IrcWeb::Config.instance
 
     get '/' do
-      @title = "Home"
-      @selected_nav = "home"
-      mustache :index
-    end
-
-    get '/logs' do
-      @title = "Logs"
-      @selected_nav = "logs"
-      mustache :logs, :locals => {
-        :logs => config.irc.logs.raw.keys.sort,
+      liquid :index, {
+        :title => "Home",
+        :selected_nav => "home",
       }
     end
 
-    get '/logs/search' do
-      @title = "Logs :: Search"
-      @selected_nav = "logs"
-      r = Regexp.new(params["q"])
+    get '/logs' do
+      liquid :logs, {
+        :title => "Logs",
+        :selected_nav => "logs",
+        :logs => CONFIG['irc']['logs'].keys.sort,
+      }
+    end
+
+    post '/logs/search' do
+      results = Grep.new(
+        :cli_options => [
+          "--context=5",
+          "--max-count=10",
+        ]
+      ).grep(
+        CONFIG['irc']['logs'],
+        params["q"]
+      )
+
+      liquid :logs_search, {
+        :title => "Logs :: Search",
+        :selected_nav => "logs",
+        :results => results,
+      }
     end
 
     get '/logs/:filename/download' do |filename|
-      if (file = config.irc.logs[filename]) && (File.exists?(file))
+      if (file = CONFIG['irc']['logs'][filename]) && (File.exists?(file))
         send_file(
           file, :disposition => 'attachment', :filename => File.basename(file)
         )
       else
         raise Sinatra::NotFound
       end
+    end
+
+    def liquid(template, locals={})
+      locals = IrcWeb::Helper.global(locals).merge(locals)
+      super(template, {:layout => :layout}, locals)
     end
 
   end

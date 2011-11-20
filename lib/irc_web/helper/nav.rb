@@ -1,22 +1,17 @@
-require 'mustache'
-
 module IrcWeb
+  module Helper
+    class Nav < Base
 
-  module Views
-
-    class Layout < Mustache
-      TITLE_PREFIX = "IrcWeb"
       NAV_ITEMS = [
         [ "home", "/" ],
         [ "logs", "/logs" ],
       ]
 
-      def title
-        [ TITLE_PREFIX, @title ].compact.join(" :: ")
+      def initialize(options={})
+        @selected_nav = options[:selected_nav] || "home"
       end
 
-      def nav
-        @selected_nav ||= "home"
+      def to_liquid
         ret = "<ul>"
         NAV_ITEMS.map do |n,u|
           if @selected_nav == n
@@ -26,16 +21,10 @@ module IrcWeb
           end
         end
         ret += "</ul>"
+
+        return ret
       end
 
     end
-
-    class Index < Layout
-    end
-
-    class Logs < Layout
-    end
-
   end
-
 end

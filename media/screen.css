@@ -17,3 +17,36 @@ nav a.selected {
 .main {
   padding: 0 20px;
 }
+.grep-results {
+	background-color: #EEE;
+}
+.grep-results dt {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+.grep-results dd, .grep-results dt {
+	padding: 3px;
+	margin: 0;
+}
+.grep-results dd {
+  margin-left: 20px;
+}
+.grep-results dd + dd:before {
+	content: '···';
+	font-size: 2.5em;
+}
+.grep-results ol {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+.grep-results li.match {
+	background-color: #EE6;
+}
+.grep-results .nick:before {
+	content: '<';
+}
+.grep-results .nick:after {
+	content: '>';
+}
+

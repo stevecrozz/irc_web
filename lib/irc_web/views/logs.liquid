@@ -9,7 +9,8 @@
   Use the search tool above to find information from the chat logs or download
   entire channel logs from the list below.
 </p>
-{{#logs}}
-  <li><a href="/logs/{{to_s}}/download">#{{to_s}}</a></li>
-{{/logs}}
-
+<ul>
+{% for log in logs %}
+  <li><a href="/logs/{{log}}/download">#{{log}}</a></li>
+{% endfor %}
+</ul>
