@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+CONFIG_RU=config.ru
+racksh

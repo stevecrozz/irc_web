@@ -73,6 +73,9 @@ GEM
       rack
     rack-test (0.6.1)
       rack (>= 1.0)
+    racksh (0.9.9)
+      rack (>= 1.0)
+      rack-test (>= 0.5)
     ruby-openid (2.1.8)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
@@ -103,6 +106,7 @@ DEPENDENCIES
   oa-openid
   rack-contrib (~> 1.0.1)
   rack-openid
+  racksh
   ruby-openid
   sinatra
   sinatra-contrib
