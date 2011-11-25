@@ -1,11 +1,17 @@
 require 'sinatra/base'
+require 'sinatra/reloader'
 require 'liquid'
 require 'irc_web/helper'
 require 'grep'
+require 'data_mapper'
 
 module IrcWeb
 
   class App < Sinatra::Base
+
+    configure :development do
+      register Sinatra::Reloader
+    end
 
     get '/' do
       liquid :index, {
@@ -50,8 +56,15 @@ module IrcWeb
       end
     end
 
+    get '/bots' do
+    end
+
     def liquid(template, locals={})
-      locals = IrcWeb::Helper.global(locals).merge(locals)
+      locals = {
+        'username' => request.env['user'].name,
+      }.merge(IrcWeb::Helper.global(locals)).
+        merge(locals)
+
       super(template, {:layout => :layout}, locals)
     end
 

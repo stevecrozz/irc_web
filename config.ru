@@ -12,9 +12,18 @@ require 'omniauth/openid'
 require 'lib/force_omni_auth_login'
 require 'yaml'
 require 'irc_web/app'
+require 'irc_web/middleware/prepare_user'
 
 # Load our configuration file
 CONFIG = YAML.load_file('config.yml')
+DataMapper.setup(:default, CONFIG['datamapper'])
+Dir.glob(File.join(app_path, 'lib', 'irc_web', 'model/*'), &method(:require))
+IrcWeb::User.inspect
+DataMapper.finalize()
+DataMapper.auto_migrate!()
+
+# Add environment specific stuff here
+# ENV['RACK_ENV'] = :development
 
 use Rack::CommonLogger
 use Rack::Reloader
@@ -27,6 +36,7 @@ if CONFIG['google_auth_domain']
   end
   use ForceOmniAuthLogin
 end
+use IrcWeb::Middleware::PrepareUser
 
 run IrcWeb::App
 

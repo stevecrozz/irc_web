@@ -17,6 +17,12 @@ nav a.selected {
 .main {
   padding: 0 20px;
 }
+footer {
+  text-align: center;
+}
+
+
+
 .grep-results {
 	background-color: #EEE;
 }
