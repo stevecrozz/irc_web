@@ -5,6 +5,7 @@ module IrcWeb
       NAV_ITEMS = [
         [ "home", "/" ],
         [ "logs", "/logs" ],
+        [ "bots", "/bots" ],
       ]
 
       def initialize(options={})

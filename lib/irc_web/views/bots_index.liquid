@@ -1,0 +1,10 @@
+<h1>Bots Index</h1>
+{% if bots.size == 0 %}
+<p>IrcWeb doesn't know about any bots</p>
+{% endif %}
+<p><a href="/bots/new">add a bot</a></p>
+<ul>
+{% for bot in bots %}
+  <li>{{bot}}</li>
+{% endfor %}
+</ul>

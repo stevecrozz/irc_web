@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'sinatra/reloader'
 require 'liquid'
 require 'irc_web/helper'
+require 'irc_web/form/bot'
 require 'grep'
 require 'data_mapper'
 
@@ -57,7 +58,31 @@ module IrcWeb
     end
 
     get '/bots' do
+      bots = IrcWeb::Bot.all()
+      liquid :bots_index, {
+        :bots => bots,
+        :title => 'Bots :: Index',
+        :selected_nav => 'bots',
+      }
     end
+
+    bots_new = lambda do
+      form = IrcWeb::Form::Bot.new(
+        IrcWeb::Bot.new(
+          request.params.merge({'updated_by' => request.env['user']})))
+
+      if request.request_method == "POST" && form.save
+        redirect '/bots'
+      end
+
+      liquid :bots_new, {
+        :title => 'Bots :: New',
+        :selected_nav => 'bots',
+        :form => form,
+      }
+    end
+    get '/bots/new', &bots_new
+    post '/bots/new', &bots_new
 
     def liquid(template, locals={})
       locals = {

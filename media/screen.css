@@ -20,6 +20,25 @@ nav a.selected {
 footer {
   text-align: center;
 }
+form ol {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+form ol li {
+	margin: 3px 0;
+}
+form ol label {
+	width: 200px;
+	font-weight: bold;
+	display: inline-block;
+}
+form .actions {
+	margin: 10px 0;
+}
+form .actions input {
+	margin: auto 200px 0;
+}
 
 
 
