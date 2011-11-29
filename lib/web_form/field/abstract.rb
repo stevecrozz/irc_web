@@ -4,7 +4,7 @@ module WebForm
       attr_accessor :name
       attr_accessor :form
 
-      def initialize(field_name, form_name)
+      def initialize(field_name, form_name, options={})
         @id   = "%s_%s" % [form_name, field_name]
         @name = field_name
       end

@@ -1,5 +1,7 @@
 require 'web_form/field/abstract'
+require 'web_form/field/select'
 require 'web_form/field/text'
+require 'web_form/field/text_area'
 
 module WebForm
   class Base
@@ -8,7 +10,7 @@ module WebForm
     attr_accessor :http_method
     attr_accessor :submit_value
 
-    def self.field(name, klass)
+    def self.field(name, klass, options={})
       if !@form_name
         self.name =~ /([^:.]*)$/
         @form_name = $1.downcase
@@ -17,7 +19,7 @@ module WebForm
       @field_names ||= []
 
       # Create the field
-      field = klass.new(name, @form_name)
+      field = klass.new(name, @form_name, options)
 
       if index = @field_names.index(name)
         # We had this one before, overwrite it

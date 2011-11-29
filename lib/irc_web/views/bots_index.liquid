@@ -5,6 +5,6 @@
 <p><a href="/bots/new">add a bot</a></p>
 <ul>
 {% for bot in bots %}
-  <li>{{bot}}</li>
+  <li><a href="/bots/{{bot.id}}">{{bot.nickname}}</a></li>
 {% endfor %}
 </ul>

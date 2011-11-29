@@ -3,6 +3,7 @@ require 'sinatra/reloader'
 require 'liquid'
 require 'irc_web/helper'
 require 'irc_web/form/bot'
+require 'irc_web/form/web_hook'
 require 'grep'
 require 'data_mapper'
 
@@ -57,15 +58,6 @@ module IrcWeb
       end
     end
 
-    get '/bots' do
-      bots = IrcWeb::Bot.all()
-      liquid :bots_index, {
-        :bots => bots,
-        :title => 'Bots :: Index',
-        :selected_nav => 'bots',
-      }
-    end
-
     bots_new = lambda do
       form = IrcWeb::Form::Bot.new(
         IrcWeb::Bot.new(
@@ -83,6 +75,61 @@ module IrcWeb
     end
     get '/bots/new', &bots_new
     post '/bots/new', &bots_new
+
+    get '/bots' do
+      bots = IrcWeb::Bot.all()
+      liquid :bots_index, {
+        :bots => bots.map { |b| b.to_hash },
+        :title => 'Bots :: Index',
+        :selected_nav => 'bots',
+      }
+    end
+
+    get '/bots/:id' do
+      b = IrcWeb::Bot.get(params[:id])
+      liquid :bots_show, {
+        :bot => b.to_hash,
+        :can_edit => b.created_by == request.env['user'],
+        :title => 'Bot :: %s' % b.nickname,
+        :selected_nav => 'bots',
+      }
+    end
+
+    bots_edit = lambda do
+      b = IrcWeb::Bot.get(params[:id])
+      params.delete(:id)
+      b.attributes = params
+      form = IrcWeb::Form::Bot.new(b, {
+        'submit_path' => '/bots/%s/edit' % b.id,
+      })
+
+      if request.request_method == "POST" && form.save
+        redirect '/bots'
+      end
+
+      liquid :bots_new, {
+        :title => 'Bots :: Edit',
+        :selected_nav => 'bots',
+        :form => form,
+      }
+    end
+    get '/bots/:id/edit', &bots_edit
+    post '/bots/:id/edit', &bots_edit
+
+    get '/webhooks/new' do
+      if params[:bot_id]
+        bot = IrcWeb::WebHook.new(
+          request.params.merge({
+            'updated_by' => request.env['user']}))
+
+        form = IrcWeb::Form::WebHook.new(bot, params)
+        liquid :webhooks_new, {
+          :form => form,
+        }
+      else
+        raise Sinatra::NotFound
+      end
+    end
 
     def liquid(template, locals={})
       locals = {

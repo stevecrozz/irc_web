@@ -2,22 +2,20 @@ require 'web_form/base'
 
 module IrcWeb
   module Form
-    class Bot < WebForm::Base
+    class WebHook < WebForm::Base
 
-      DEFAULT_SUBMIT_PATH = '/bots/new'
+      SUBMIT_PATH = '/webhooks/new'
 
-      field :nickname, WebForm::Field::Text
-      field :password, WebForm::Field::Text
-      field :type, WebForm::Field::Select, :options => {
-        "rbot" => "rbot",
-        "other" => "other",
+      field :decode_method, WebForm::Field::Select, :options => {
+        "none" => "none",
+        "json" => "json",
       }
-      field :botusername, WebForm::Field::Text
-      field :botpassword, WebForm::Field::Text
+      field :message_template, WebForm::Field::TextArea
+      field :broadcast_channels, WebForm::Field::TextArea
 
       def initialize(object=nil, options={})
-        @action = options['submit_path'] || DEFAULT_SUBMIT_PATH
-        @submit_value = "Create Bot"
+        @action = SUBMIT_PATH
+        @submit_value = "Create Web Hook"
 
         if @object = object
           @object.updated_at = Time.now
@@ -26,7 +24,7 @@ module IrcWeb
             @object.created_at = @object.updated_at
             @object.created_by = @object.updated_by
           else
-            @submit_value = "Update Bot"
+            @submit_value = "Update Web Hook"
           end
 
           @data = @object.attributes

@@ -1,0 +1,22 @@
+<h1>Bot :: {{bot.nickname}}</h1>
+{% if can_edit %}
+<a href="/bots/{{bot.id}}/edit">edit</a>
+{% endif %}
+<dl>
+  <dt>nickname</dt>
+  <dd>{{bot.nickname}}</dd>
+  <dt>type</dt>
+  <dd>{{bot.type}}</dd>
+{% if can_edit %}
+  <dt>password</dt>
+  <dd>{{bot.password}}</dd>
+  <dt>bot username</dt>
+  <dd>{{bot.botusername}}</dd>
+  <dt>bot password</dt>
+  <dd>{{bot.botpassword}}</dd>
+{% endif %}
+</dl>
+{% if can_edit && bot.type == 'rbot' %}
+  <h2>Web Hooks</h2>
+  <a href="/webhooks/new?bot_id={{bot.id}}">create hook</a>
+{% endif %}
