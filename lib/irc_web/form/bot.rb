@@ -6,14 +6,15 @@ module IrcWeb
 
       DEFAULT_SUBMIT_PATH = '/bots/new'
 
-      field :nickname, WebForm::Field::Text
-      field :password, WebForm::Field::Text
+      field :nickname, WebForm::Field::Text, :fieldset => :network_settings
+      field :password, WebForm::Field::Text, :fieldset => :network_settings
+
       field :type, WebForm::Field::Select, :options => {
         "rbot" => "rbot",
-        "other" => "other",
-      }
-      field :botusername, WebForm::Field::Text
-      field :botpassword, WebForm::Field::Text
+      }, :fieldset => :bot_settings
+      field :drb_uri, WebForm::Field::Text, :fieldset => :bot_settings
+      field :botusername, WebForm::Field::Text, :fieldset => :bot_settings
+      field :botpassword, WebForm::Field::Text, :fieldset => :bot_settings
 
       def initialize(object=nil, options={})
         @action = options['submit_path'] || DEFAULT_SUBMIT_PATH

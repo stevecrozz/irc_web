@@ -1,2 +1,5 @@
 <h1>Add a Web Hook</h1>
+{% if hook.token %}
+  <h2>/webhooktokens/{{hook.token}}</h2>
+{% endif %}
 {{form}}

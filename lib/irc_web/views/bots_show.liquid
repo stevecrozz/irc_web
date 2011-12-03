@@ -8,6 +8,8 @@
   <dt>type</dt>
   <dd>{{bot.type}}</dd>
 {% if can_edit %}
+  <dt>drb uri</dt>
+  <dd>{{bot.drb_uri}}</dd>
   <dt>password</dt>
   <dd>{{bot.password}}</dd>
   <dt>bot username</dt>
@@ -19,4 +21,9 @@
 {% if can_edit && bot.type == 'rbot' %}
   <h2>Web Hooks</h2>
   <a href="/webhooks/new?bot_id={{bot.id}}">create hook</a>
+  <ul>
+    {% for hook in web_hooks %}
+      <li><a href="/webhooks/{{hook.id}}/edit">{{hook.id}}</a></li>
+    {% endfor %}
+  </ul>
 {% endif %}

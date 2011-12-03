@@ -89,6 +89,7 @@ module IrcWeb
       b = IrcWeb::Bot.get(params[:id])
       liquid :bots_show, {
         :bot => b.to_hash,
+        :web_hooks => IrcWeb::WebHook.all(:bot => b).map { |h| h.to_hash },
         :can_edit => b.created_by == request.env['user'],
         :title => 'Bot :: %s' % b.nickname,
         :selected_nav => 'bots',
@@ -116,13 +117,17 @@ module IrcWeb
     get '/bots/:id/edit', &bots_edit
     post '/bots/:id/edit', &bots_edit
 
-    get '/webhooks/new' do
+    webhooks_new = lambda do
       if params[:bot_id]
-        bot = IrcWeb::WebHook.new(
+        hook = IrcWeb::WebHook.new(
           request.params.merge({
             'updated_by' => request.env['user']}))
+        form = IrcWeb::Form::WebHook.new(hook, params)
 
-        form = IrcWeb::Form::WebHook.new(bot, params)
+        if request.request_method == "POST" && form.save
+          redirect '/bots/%s' % params[:bot_id]
+        end
+
         liquid :webhooks_new, {
           :form => form,
         }
@@ -130,6 +135,28 @@ module IrcWeb
         raise Sinatra::NotFound
       end
     end
+    get '/webhooks/new', &webhooks_new
+    post '/webhooks/new', &webhooks_new
+
+    webhooks_edit = lambda do
+      hook = IrcWeb::WebHook.get(params[:id])
+      params.delete(:id)
+      hook.attributes = params
+      form = IrcWeb::Form::WebHook.new(hook, {
+        'submit_path' => '/webhooks/%s/edit' % hook.id,
+      })
+
+      if request.request_method == "POST" && form.save
+        redirect '/bots/%s' % params[:bot_id]
+      end
+
+      liquid :webhooks_new, {
+        :form => form,
+        :hook => hook.to_hash,
+      }
+    end
+    get '/webhooks/:id/edit', &webhooks_edit
+    post '/webhooks/:id/edit', &webhooks_edit
 
     def liquid(template, locals={})
       locals = {

@@ -13,6 +13,7 @@ module IrcWeb
     property :password, String
     property :sha256password, String, :length => 64
     property :type, String
+    property :drb_uri, String
     property :botusername, String
     property :botpassword, String
     property :created_at, DateTime
@@ -28,6 +29,7 @@ module IrcWeb
         'id' => self.id,
         'nickname' => self.nickname,
         'password' => self.password,
+        'drb_uri' => self.drb_uri,
         'type' => self.type,
         'botusername' => self.botusername,
         'botpassword' => self.botpassword,

@@ -4,17 +4,17 @@ module IrcWeb
   module Form
     class WebHook < WebForm::Base
 
-      SUBMIT_PATH = '/webhooks/new'
+      DEFAULT_SUBMIT_PATH = '/webhooks/new'
 
+      field :bot_id, WebForm::Field::Hidden
       field :decode_method, WebForm::Field::Select, :options => {
-        "none" => "none",
         "json" => "json",
       }
       field :message_template, WebForm::Field::TextArea
       field :broadcast_channels, WebForm::Field::TextArea
 
       def initialize(object=nil, options={})
-        @action = SUBMIT_PATH
+        @action = options['submit_path'] || DEFAULT_SUBMIT_PATH
         @submit_value = "Create Web Hook"
 
         if @object = object

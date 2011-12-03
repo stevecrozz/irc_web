@@ -8,7 +8,7 @@ module WebForm
           @options = options[:options]
         end
 
-        super(field_name, form_name)
+        super(field_name, form_name, options)
       end
 
       def to_s

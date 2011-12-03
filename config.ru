@@ -13,6 +13,7 @@ require 'lib/force_omni_auth_login'
 require 'yaml'
 require 'irc_web/app'
 require 'irc_web/middleware/prepare_user'
+require 'irc_web/middleware/handle_web_hook'
 
 # Load our configuration file
 CONFIG = YAML.load_file('config.yml')
@@ -28,6 +29,7 @@ DataMapper.finalize()
 use Rack::CommonLogger
 use Rack::Reloader
 use Rack::ShowExceptions
+use IrcWeb::Middleware::HandleWebHook
 use Rack::Session::Cookie
 use Rack::Static, :urls => ["/media"]
 if CONFIG['google_auth_domain']
