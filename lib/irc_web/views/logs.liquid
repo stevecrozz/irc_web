@@ -11,6 +11,6 @@
 </p>
 <ul>
 {% for log in logs %}
-  <li><a href="/logs/{{log}}/download">#{{log}}</a></li>
+  <li><a href="/logs/{{log | replace: "#", "%23"}}/download">{{log}}</a></li>
 {% endfor %}
 </ul>

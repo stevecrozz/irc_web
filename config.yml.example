@@ -1,7 +1,7 @@
 google_auth_domain: yourdomain.com
 irc:
   logs:
-    somechat: "/var/irclogs/#somelogfile"
+    "#somechat": "/var/irclogs/#somelogfile"
 datamapper:
   adapter: sqlite3
   host: localhost

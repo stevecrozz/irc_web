@@ -14,8 +14,8 @@
           <ol>
           {% for line in match %}
             <li class="{% if line.context %}context{% else %}match{% endif %}">
-              <span class="time">{{line.time}}</span>
-              {% if line.nick %}<span class="nick">{{line.nick}}</span>{% endif %}
+              <span class="time">{{line.time | escape}}</span>
+              {% if line.nick %}<span class="nick">{{line.nick | escape}}</span>{% endif %}
               <span class="text">{{line.text | escape}}</span>
             </li>
           {% endfor %}
