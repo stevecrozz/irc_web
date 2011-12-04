@@ -1,4 +1,5 @@
 require 'json'
+require 'rbot_remote'
 
 module IrcWeb
   module Middleware
@@ -10,7 +11,7 @@ module IrcWeb
 
       def call(env)
         if env['REQUEST_METHOD'] == 'POST' &&
-          env['REQUEST_PATH'] =~ /^\/webhooktokens\/(.*)/
+          env['PATH_INFO'] =~ /^\/webhooktokens\/(.*)/
 
           hook = IrcWeb::WebHook.first(:token => $1)
           payload = env['rack.input'].read()
@@ -28,8 +29,9 @@ module IrcWeb
 
           broadcast_channels = Liquid::Template.parse(
             hook.broadcast_channels
-          ).render(locals).split("\n").reject(:empty?)
+          ).render(locals).split("\n").reject(&:empty?).map(&:chomp)
 
+          bot = hook.bot
           remote = RbotRemote.new(bot.drb_uri, bot.botusername, bot.botpassword)
           remote.say(message, broadcast_channels)
 
