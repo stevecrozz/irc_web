@@ -21,7 +21,7 @@ DataMapper.setup(:default, CONFIG['datamapper'])
 Dir.glob(File.join(app_path, 'lib', 'irc_web', 'model/*'), &method(:require))
 IrcWeb::User.inspect
 DataMapper.finalize()
-# DataMapper.auto_migrate!()
+DataMapper.auto_upgrade!()
 
 # Add environment specific stuff here
 # ENV['RACK_ENV'] = :development
