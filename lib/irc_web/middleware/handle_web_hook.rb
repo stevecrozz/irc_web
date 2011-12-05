@@ -14,7 +14,8 @@ module IrcWeb
           env['PATH_INFO'] =~ /^\/webhooktokens\/(.*)/
 
           hook = IrcWeb::WebHook.first(:token => $1)
-          payload = env['rack.input'].read()
+          post = Rack::Utils.parse_query(Rack::Utils.unescape(env['rack.input'].read()))
+          payload = post["payload"]
 
           if hook.decode_method == 'json'
             locals = JSON(payload)
