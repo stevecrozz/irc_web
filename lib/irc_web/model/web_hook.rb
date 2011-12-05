@@ -11,7 +11,7 @@ module IrcWeb
     property :token, String
     property :decode_method, String
     property :message_template, Text
-    property :broadcast_channels, String
+    property :broadcast_channels, Text
     property :most_recent_request, Text
     property :most_recent_message, Text
     property :created_at, DateTime
