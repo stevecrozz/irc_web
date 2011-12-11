@@ -1,35 +1,36 @@
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>{{title}}</title>
-	<meta name="description" content="">
-	<meta name="author" content="">
+  <title>{{title}}</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
-	<link rel="stylesheet" href="/media/style.css">
-	<link rel="stylesheet" href="/media/screen.css">
-	<script src="/media/modernizr-2.0.6.min.js"></script>
+  <link rel="stylesheet" href="/media/style.css">
+  <link rel="stylesheet" href="/media/screen.css">
+  <script src="/media/modernizr-2.0.6.min.js"></script>
+  <script src="/media/jquery-1.7.min.js"></script>
 </head>
 <body>
 
 <div id="container">
-	<header>
+  <header>
     <nav>
       {{nav}}
     </nav>
-	</header>
+  </header>
 
-	<div class="main" id="main" role="main">
+  <div class="main" id="main" role="main">
     {{yield}}
-	</div>
+  </div>
 
-	<footer>
+  <footer>
     <p>Logged in as {{username}}</p>
-	</footer>
+  </footer>
 </div> <!--! end of #container -->
 
 <script src="/media/jquery-1.7.min.js"></script>
