@@ -7,6 +7,11 @@ module IrcWeb
       DEFAULT_SUBMIT_PATH = '/webhooks/new'
 
       field :bot_id, WebForm::Field::Hidden
+      field :payload_source, WebForm::Field::Select, :options => {
+        "form field"   => "form_field",
+        "request body" => "request_body",
+      }
+      field :payload_index, WebForm::Field::Text
       field :decode_method, WebForm::Field::Select, :options => {
         "json" => "json",
       }

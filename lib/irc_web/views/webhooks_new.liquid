@@ -3,3 +3,16 @@
   <h2>/webhooktokens/{{hook.token}}</h2>
 {% endif %}
 {{form}}
+<script type="text/javascript">
+$(function(){
+  $('#webhook_payload_source').change(function(){
+    $('#webhook_payload_index').
+      prop('disabled', $(this).val() !== 'form_field').
+      closest('li').
+      toggle($(this).val() === 'form_field');
+    if ($(this).val() !== 'form_field') {
+      $('#webhook_payload_index').val("");
+    }
+  }).change();
+});
+</script>

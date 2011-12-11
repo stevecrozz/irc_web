@@ -14,8 +14,15 @@ module IrcWeb
           env['PATH_INFO'] =~ /^\/webhooktokens\/(.*)/
 
           hook = IrcWeb::WebHook.first(:token => $1)
-          post = Rack::Utils.parse_query(Rack::Utils.unescape(env['rack.input'].read()))
-          payload = post["payload"]
+
+          if hook.payload_source == 'form_field'
+            post = Rack::Utils.parse_query(Rack::Utils.unescape(env['rack.input'].read()))
+            if payload_index != ""
+              payload = post[hook.payload_index]
+            else
+              payload = post
+            end
+          end
 
           if hook.decode_method == 'json'
             locals = JSON(payload)
@@ -31,6 +38,10 @@ module IrcWeb
           broadcast_channels = Liquid::Template.parse(
             hook.broadcast_channels
           ).render(locals).split("\n").reject(&:empty?).map(&:chomp)
+
+          hook.most_recent_request = locals.inspect
+          hook.most_recent_message = message
+          hook.save()
 
           bot = hook.bot
           remote = RbotRemote.new(bot.drb_uri, bot.botusername, bot.botpassword)

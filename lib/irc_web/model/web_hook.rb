@@ -9,6 +9,8 @@ module IrcWeb
 
     property :id, Serial
     property :token, String
+    property :payload_source, String
+    property :payload_index, String
     property :decode_method, String
     property :message_template, Text
     property :broadcast_channels, Text
