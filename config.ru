@@ -24,6 +24,10 @@ IrcWeb::User.inspect
 DataMapper.finalize()
 DataMapper.auto_upgrade!()
 
+require 'template_tags/include_tag'
+Liquid::Template.register_tag(
+  'include', TemplateTags::IncludeTag.path(File.join(app_path, 'includes')))
+
 # Add environment specific stuff here
 # ENV['RACK_ENV'] = :development
 
