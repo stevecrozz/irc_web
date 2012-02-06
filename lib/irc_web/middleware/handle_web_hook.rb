@@ -1,5 +1,5 @@
 require 'json'
-require 'rbot_remote'
+require 'lib/rbot/rbot_remote'
 
 module IrcWeb
   module Middleware
@@ -44,7 +44,7 @@ module IrcWeb
           hook.save()
 
           bot = hook.bot
-          remote = RbotRemote.new(bot.drb_uri, bot.botusername, bot.botpassword)
+          remote = Rbot::RbotRemote.new(bot.drb_uri, bot.botusername, bot.botpassword)
           remote.say(message, broadcast_channels)
 
           return [ 200, { 'Content-Type' => 'text/plain' }, [message] ]
