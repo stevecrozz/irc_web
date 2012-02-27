@@ -15,5 +15,9 @@ module Rbot
       end
     end
 
+    def publish(subscription, message)
+      @drb_client.delegate(@id, "dispatch mail_bridge publish %s %s" % [subscription, message])
+    end
+
   end
 end
